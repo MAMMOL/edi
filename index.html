@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trabajo Final - Diplomatura en IA Generativa - EDI Solutions</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Diplomatura en Inteligencia Artificial Generativa</h1>
+            <h2>Trabajo Final Integrador: "Arquitecto de negocios de IA"</h2>
+            <div class="student-info">
+                <label for="student-name">Nombre del Estudiante:</label>
+                <input type="text" id="student-name" placeholder="Escribe tu nombre aquí...">
+            </div>
+        </div>
+    </header>
+
+    <nav>
+        <ul>
+            <li><a href="#introduccion">Introducción</a></li>
+            <li><a href="#analisis-datos">Análisis de Datos</a></li>
+            <li><a href="#productividad">Productividad</a></li>
+            <li><a href="#presentacion">Presentación Ejecutiva</a></li>
+            <li><a href="#etica">Impacto Ético</a></li>
+        </ul>
+    </nav>
+
+    <main class="container">
+        <section id="introduccion">
+            <h3>Introducción: Nuestra Compañía y el Intercambio Electrónico de Datos (EDI)</h3>
+            <p>Nuestra compañía se especializa en la <strong>resolución de configuraciones de Intercambio Electrónico de Datos (EDI)</strong>, una tecnología fundamental para la automatización de la comunicación empresarial. El EDI permite el intercambio de documentos comerciales, como órdenes de compra, facturas y avisos de envío, en un formato electrónico estandarizado entre socios comerciales.</p>
+            <p>Esto elimina la necesidad de procesos manuales basados en papel, reduciendo errores, acelerando las transacciones y mejorando la eficiencia operativa de la cadena de suministro. En un mundo cada vez más interconectado, la correcta implementación y gestión de las configuraciones EDI es crucial para que las empresas mantengan una comunicación fluida y eficiente con sus proveedores, clientes y otros socios.</p>
+            <div class="call-to-action">
+                <p><strong>¿Tienes problemas con tus archivos EDI?</strong> ¡Impórtalo aquí para que lo solucionemos!</p>
+                <input type="file" id="edi-file-upload">
+                <button onclick="alert('Archivo recibido. Iniciando proceso de análisis y solución...')">Solucionar EDI</button>
+            </div>
+        </section>
+
+        <section id="analisis-datos">
+            <h3>1. Análisis de Datos (Simulado)</h3>
+            <p>Para este proyecto, hemos simulado un conjunto de datos ficticios que reflejan el rendimiento de las operaciones EDI de una empresa típica que utiliza nuestros servicios. El objetivo fue identificar patrones y <em>insights</em> relevantes que permitan comprender el desempeño del negocio.</p>
+            
+            <div class="charts-container">
+                <div class="chart-box">
+                    <h4>Volumen de Transacciones por Tipo de Documento</h4>
+                    <canvas id="chart-transactions"></canvas>
+                </div>
+                <div class="chart-box">
+                    <h4>Evolución de la Tasa de Error (%)</h4>
+                    <canvas id="chart-errors"></canvas>
+                </div>
+            </div>
+
+            <div class="insights">
+                <h4>Insights Estratégicos:</h4>
+                <ul>
+                    <li><strong>Optimización de Tiempos:</strong> El 70% de las transacciones se procesan en menos de 15 minutos.</li>
+                    <li><strong>Reducción de Errores:</strong> La tasa de error en órdenes de compra bajó un 15% este trimestre.</li>
+                    <li><strong>Satisfacción:</strong> Menos del 2% de errores aumenta la satisfacción del cliente en un 20%.</li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="productividad">
+            <h3>2. Hacks de Productividad</h3>
+            <p>Durante el desarrollo de este proyecto final, se emplearon diversas herramientas de IA Generativa como "hacks de productividad" para optimizar y acelerar varias etapas:</p>
+            <div class="hacks-grid">
+                <div class="hack-card">
+                    <h4>Generación de Contenido</h4>
+                    <p>Uso de IA para borradores iniciales y redacción asistida.</p>
+                </div>
+                <div class="hack-card">
+                    <h4>Síntesis Automática</h4>
+                    <p>Resumen de artículos técnicos sobre estándares EDI.</p>
+                </div>
+                <div class="hack-card">
+                    <h4>Organización</h4>
+                    <p>Estructuración de planes de proyecto y cronogramas sugeridos.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="presentacion">
+            <h3>3. Presentación Ejecutiva del Proyecto</h3>
+            
+            <div class="component">
+                <h4>a) Identidad de Marca y Video Publicitario</h4>
+                <p>Nuestra identidad se centra en la confiabilidad y eficiencia. A continuación, puedes ver nuestro video publicitario:</p>
+                <div class="video-container">
+                    <div class="placeholder">
+                        <label for="video-url">Pega aquí el link de tu Video:</label>
+                        <input type="text" id="video-url" placeholder="https://www.youtube.com/embed/..." onchange="updateVideo()">
+                    </div>
+                    <iframe id="video-frame" width="100%" height="315" src="" frameborder="0" allowfullscreen style="display:none;"></iframe>
+                </div>
+            </div>
+
+            <div class="component">
+                <h4>b) Esquema de Automatización y Chatbot</h4>
+                <p>Hemos diseñado un chatbot inteligente para la atención al cliente y gestión de incidentes EDI.</p>
+                <div class="chatbot-container">
+                    <div class="placeholder">
+                        <label for="chatbot-url">Pega aquí el link de tu Chatbot:</label>
+                        <input type="text" id="chatbot-url" placeholder="https://link-de-tu-chatbot.com" onchange="updateChatbot()">
+                    </div>
+                    <iframe id="chatbot-frame" width="100%" height="500" src="" frameborder="0" style="display:none;"></iframe>
+                </div>
+            </div>
+        </section>
+
+        <section id="etica">
+            <h3>Reflexión Final: Impacto Ético</h3>
+            <p>El uso de la IA en nuestras soluciones EDI conlleva importantes consideraciones éticas. Es fundamental asegurar la <strong>privacidad y seguridad de los datos</strong> comerciales sensibles. La IA debe ser transparente y evitar sesgos que afecten a los socios comerciales.</p>
+            <p>La automatización debe complementar la interacción humana, garantizando soporte personalizado. La responsabilidad en el diseño es clave para fomentar la confianza en toda la cadena de suministro.</p>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 EDI Solutions - Trabajo Final Integrador</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
