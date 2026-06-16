@@ -1,72 +1,150 @@
-// Gráfico de Transacciones
-const ctxTrans = document.getElementById('chart-transactions').getContext('2d');
-new Chart(ctxTrans, {
-    type: 'bar',
-    data: {
-        labels: ['Órdenes (850)', 'Facturas (810)', 'Avisos Envío (856)', 'Pagos (820)'],
+/* ========================================================================
+   EDI Solutions — script.js
+   Dataset simulado de operaciones EDI + interacciones de la página
+   ======================================================================== */
+
+document.addEventListener('DOMContentLoaded', () => {
+  try { initCharts(); } catch (err) { console.error('No se pudieron inicializar los gráficos:', err); }
+  try { initNavHighlight(); } catch (err) { console.error('No se pudo inicializar el nav:', err); }
+  try { initRevealOnScroll(); } catch (err) { console.error('No se pudo inicializar el scroll reveal:', err); }
+});
+
+/* ---------- 1. Dataset simulado y gráficos (Chart.js) ---------- */
+function initCharts() {
+  if (typeof Chart === 'undefined') {
+    console.warn('Chart.js no está disponible; se omiten los gráficos.');
+    return;
+  }
+
+  const palette = {
+    ink: '#0B2545',
+    signal: '#1FB6A6',
+    coral: '#FF6B4A',
+    slate: '#5C6B7A',
+    line: '#E2E6EA'
+  };
+
+  // Dataset ficticio: volumen de transacciones procesadas en el último trimestre,
+  // agrupado por tipo de documento EDI.
+  const transactionsByType = {
+    labels: [
+      'EDI 850 — Órdenes de Compra',
+      'EDI 810 — Facturas',
+      'EDI 856 — Avisos de Envío',
+      'EDI 820 — Órdenes de Pago'
+    ],
+    values: [3420, 2150, 1860, 980]
+  };
+
+  // Dataset ficticio: evolución mensual de la tasa de error (%) en el procesamiento EDI.
+  const errorRateEvolution = {
+    labels: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun'],
+    values: [4.1, 3.7, 3.4, 3.0, 2.7, 2.5]
+  };
+
+  const transactionsCanvas = document.getElementById('chart-transactions');
+  if (transactionsCanvas) {
+    new Chart(transactionsCanvas, {
+      type: 'bar',
+      data: {
+        labels: transactionsByType.labels,
         datasets: [{
-            label: 'Volumen Mensual',
-            data: [1200, 1150, 950, 800],
-            backgroundColor: '#3498db'
+          label: 'Transacciones (trimestre)',
+          data: transactionsByType.values,
+          backgroundColor: [palette.ink, palette.signal, palette.coral, palette.slate],
+          borderRadius: 6,
+          maxBarThickness: 38
         }]
-    },
-    options: {
+      },
+      options: {
+        indexAxis: 'y',
         responsive: true,
-        plugins: {
-            legend: { display: false }
+        maintainAspectRatio: false,
+        plugins: { legend: { display: false } },
+        scales: {
+          x: { grid: { color: palette.line }, ticks: { font: { family: "'IBM Plex Sans'" } } },
+          y: { grid: { display: false }, ticks: { font: { family: "'IBM Plex Sans'", size: 11 } } }
         }
-    }
-});
+      }
+    });
+  }
 
-// Gráfico de Errores
-const ctxErrors = document.getElementById('chart-errors').getContext('2d');
-new Chart(ctxErrors, {
-    type: 'line',
-    data: {
-        labels: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun'],
+  const errorCanvas = document.getElementById('chart-errors');
+  if (errorCanvas) {
+    new Chart(errorCanvas, {
+      type: 'line',
+      data: {
+        labels: errorRateEvolution.labels,
         datasets: [{
-            label: 'Tasa de Error %',
-            data: [5.2, 4.8, 4.1, 3.5, 3.2, 2.8],
-            borderColor: '#e74c3c',
-            tension: 0.1,
-            fill: false
+          label: 'Tasa de error (%)',
+          data: errorRateEvolution.values,
+          borderColor: palette.signal,
+          backgroundColor: 'rgba(31, 182, 166, 0.12)',
+          fill: true,
+          tension: 0.35,
+          pointBackgroundColor: palette.ink,
+          pointRadius: 4,
+          borderWidth: 2
         }]
-    },
-    options: {
-        responsive: true
-    }
-});
-
-// Función para actualizar el Video
-function updateVideo() {
-    const url = document.getElementById('video-url').value;
-    const frame = document.getElementById('video-frame');
-    const placeholder = document.querySelector('.video-container .placeholder');
-    
-    if (url) {
-        // Intentar convertir URL de Youtube normal a Embed si es necesario
-        let embedUrl = url;
-        if (url.includes('youtube.com/watch?v=')) {
-            embedUrl = url.replace('watch?v=', 'embed/');
-        } else if (url.includes('youtu.be/')) {
-            embedUrl = url.replace('youtu.be/', 'youtube.com/embed/');
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: { legend: { display: false } },
+        scales: {
+          y: {
+            grid: { color: palette.line },
+            ticks: { callback: (v) => v + '%', font: { family: "'IBM Plex Sans'" } }
+          },
+          x: { grid: { display: false }, ticks: { font: { family: "'IBM Plex Sans'" } } }
         }
-        
-        frame.src = embedUrl;
-        frame.style.display = 'block';
-        placeholder.style.display = 'none';
-    }
+      }
+    });
+  }
 }
 
-// Función para actualizar el Chatbot
-function updateChatbot() {
-    const url = document.getElementById('chatbot-url').value;
-    const frame = document.getElementById('chatbot-frame');
-    const placeholder = document.querySelector('.chatbot-container .placeholder');
-    
-    if (url) {
-        frame.src = url;
-        frame.style.display = 'block';
-        placeholder.style.display = 'none';
-    }
+/* ---------- 2. Resaltar el link activo del nav según la sección visible ---------- */
+function initNavHighlight() {
+  const links = Array.from(document.querySelectorAll('nav a'));
+  if (!links.length) return;
+
+  const sections = links
+    .map(link => document.querySelector(link.getAttribute('href')))
+    .filter(Boolean);
+
+  if (!('IntersectionObserver' in window) || !sections.length) return;
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+      links.forEach(link => link.classList.remove('active'));
+      const activeLink = links.find(link => link.getAttribute('href') === '#' + entry.target.id);
+      if (activeLink) activeLink.classList.add('active');
+    });
+  }, { rootMargin: '-45% 0px -45% 0px' });
+
+  sections.forEach(section => observer.observe(section));
+}
+
+/* ---------- 3. Animación sutil de aparición al hacer scroll ---------- */
+function initRevealOnScroll() {
+  const targets = document.querySelectorAll(
+    '.tech-card, .chart-box, .hack-card, .exec-card, .insights, .strategic-conclusion'
+  );
+
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (prefersReducedMotion || !('IntersectionObserver' in window)) return;
+
+  targets.forEach(el => el.classList.add('reveal'));
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('is-visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15 });
+
+  targets.forEach(el => observer.observe(el));
 }
